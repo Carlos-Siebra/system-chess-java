@@ -83,17 +83,16 @@ public class ChessMatch {
 	}
 		private Piece makeMove(Position source, Position target) {
 			ChessPiece p = (ChessPiece)board.removePiece(source);
-			
+			p.increaseMoveCount();
 			Piece capturedPiece = board.removePiece(target);
 			board.placePiece(p, target);
-			p.increaseMoveCount();
+			
 			if (capturedPiece != null) {
 				piecesOnTheBoard.remove(capturedPiece);
 				capturedPieces.add(capturedPiece);
 			}
 			// #specialmove castling kingside rook
-<<<<<<< HEAD
-						if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
+				if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
 							Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
 							Position targetT = new Position(source.getRow(), source.getColumn() + 1);
 							ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
@@ -109,26 +108,9 @@ public class ChessMatch {
 							board.placePiece(rook, targetT);
 							rook.increaseMoveCount();
 						}
-=======
-			if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
-				Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
-				Position targetT = new Position(source.getRow(), source.getColumn() + 1);
-				ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
-				board.placePiece(rook, targetT);
-				rook.increaseMoveCount();
-			}
-
-			// #specialmove castling queenside rook
-			if (p instanceof King && target.getColumn() == source.getColumn() - 2) {
-				Position sourceT = new Position(source.getRow(), source.getColumn() - 4);
-				Position targetT = new Position(source.getRow(), source.getColumn() - 1);
-				ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
-				board.placePiece(rook, targetT);
-				rook.increaseMoveCount();
-			}
->>>>>>> c91c0373e960d3865852aa0de40968546c981b56
-			return capturedPiece;
+						return capturedPiece;
 		}
+		
 		private void undoMove(Position source, Position target, Piece capturedPiece) {
 			ChessPiece p = (ChessPiece)board.removePiece(target);
 			p.decreaseMoveCount();
