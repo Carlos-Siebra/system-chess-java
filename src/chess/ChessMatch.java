@@ -91,6 +91,23 @@ public class ChessMatch {
 				piecesOnTheBoard.remove(capturedPiece);
 				capturedPieces.add(capturedPiece);
 			}
+			// #specialmove castling kingside rook
+			if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
+				Position targetT = new Position(source.getRow(), source.getColumn() + 1);
+				ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
+				board.placePiece(rook, targetT);
+				rook.increaseMoveCount();
+			}
+
+			// #specialmove castling queenside rook
+			if (p instanceof King && target.getColumn() == source.getColumn() - 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() - 4);
+				Position targetT = new Position(source.getRow(), source.getColumn() - 1);
+				ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
+				board.placePiece(rook, targetT);
+				rook.increaseMoveCount();
+			}
 			return capturedPiece;
 		}
 		private void undoMove(Position source, Position target, Piece capturedPiece) {
@@ -103,7 +120,23 @@ public class ChessMatch {
 				capturedPieces.remove(capturedPiece);
 				piecesOnTheBoard.add(capturedPiece);
 			}
-			
+			// #specialmove castling kingside rook
+			if (p instanceof King && target.getColumn() == source.getColumn() + 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
+				Position targetT = new Position(source.getRow(), source.getColumn() + 1);
+				ChessPiece rook = (ChessPiece)board.removePiece(targetT);
+				board.placePiece(rook, sourceT);
+				rook.decreaseMoveCount();
+			}
+
+			// #specialmove castling queenside rook
+			if (p instanceof King && target.getColumn() == source.getColumn() - 2) {
+				Position sourceT = new Position(source.getRow(), source.getColumn() - 4);
+				Position targetT = new Position(source.getRow(), source.getColumn() - 1);
+				ChessPiece rook = (ChessPiece)board.removePiece(targetT);
+				board.placePiece(rook, sourceT);
+				rook.decreaseMoveCount();
+			}
 		}
 	
 	private void validateSourcePosition(Position position) {
